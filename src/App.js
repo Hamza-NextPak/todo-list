@@ -1,9 +1,9 @@
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Form, Input, Row, Col } from "reactstrap";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Iterator(args) {
-  const [repeater, setRepeater] = useState({ heading: "", data: [""] });
+  const [dummy, setDummy] = useState({ heading: "", data: [""] });
 
   const [tasks, setTasks] = useState([]);
   const [updaterepeater, setupdaterepeater] = useState({
@@ -13,28 +13,28 @@ export default function Iterator(args) {
   const [updateindex, setupdateindex] = useState(0);
 
   const Add = () => {
-    const clone = JSON.parse(JSON.stringify(repeater));
+    const clone = JSON.parse(JSON.stringify(dummy));
     clone.data.push("");
-    setRepeater(clone);
+    setDummy(clone);
   };
 
-  const sub = (index) => {
-    const clone = JSON.parse(JSON.stringify(repeater));
+  const remove = (index) => {
+    const clone = JSON.parse(JSON.stringify(dummy));
     clone.data.splice(index, 1);
     console.log(clone);
-    setRepeater(clone);
+    setDummy(clone);
   };
 
   const handleOnChangeHeading = (event) => {
-    const clone = JSON.parse(JSON.stringify(repeater));
+    const clone = JSON.parse(JSON.stringify(dummy));
     clone.heading = event.target.value;
-    setRepeater(clone);
+    setDummy(clone);
   };
 
   const handleOnChangeTask = (event, index) => {
-    const clone = JSON.parse(JSON.stringify(repeater));
+    const clone = JSON.parse(JSON.stringify(dummy));
     clone.data[index] = event.target.value;
-    setRepeater(clone);
+    setDummy(clone);
   };
 
   const updateOnChangeHeading = (event) => {
@@ -73,17 +73,17 @@ export default function Iterator(args) {
   const stop = (e) => {
     e.preventDefault();
 
-    console.log(repeater.heading);
-    console.log(repeater.data);
+    console.log(dummy.heading);
+    console.log(dummy.data);
     console.log(tasks);
     setTasks([
       ...tasks,
       {
-        title: repeater.heading,
-        list: repeater.data,
+        title: dummy.heading,
+        list: dummy.data,
       },
     ]);
-    setRepeater({
+    setDummy({
       heading: "",
       data: [""],
     });
@@ -122,13 +122,13 @@ export default function Iterator(args) {
                 name="data"
                 placeholder="Enter Your Heading"
                 type="text"
-                value={repeater.heading}
+                value={dummy.heading}
                 required
               />
             </Col>
           </Row>
           <h4 className="mt-3">Sub Tasks</h4>
-          {repeater.data.map((value, index) => (
+          {dummy.data.map((value, index) => (
             <Row key={index}>
               <Col md={5}>
                 <Input
@@ -150,7 +150,7 @@ export default function Iterator(args) {
                 {index !== 0 && (
                   <button
                     className=" btn btn-danger my-3"
-                    onClick={() => sub(index)}
+                    onClick={() => remove(index)}
                   >
                     -
                   </button>
@@ -163,23 +163,23 @@ export default function Iterator(args) {
           </button>
         </Form>
 
-        {tasks.map((value1, index1) => (
-          <div className="border border-danger p-2 my-4" key={index1}>
-            <h4>{value1.title}</h4>
+        {tasks.map((val, ind) => (
+          <div className="border border-danger p-2 my-4" key={ind}>
+            <h4>{val.title}</h4>
             <ul>
-              {value1.list.map((val, ind) => (
+              {val.list.map((val, ind) => (
                 <div key={ind}>
                   <li>{val}</li>
                 </div>
               ))}
               <button
                 className="btn btn-danger  mt-3"
-                onClick={() => deleteTask(index1)}
+                onClick={() => deleteTask(ind)}
               >
                 Delete
               </button>
               <button
-                onClick={() => update(index1, value1)}
+                onClick={() => update(ind, val)}
                 className="btn btn-warning  ms-2 mt-3"
               >
                 Update{" "}
